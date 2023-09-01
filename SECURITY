@@ -1,0 +1,25 @@
+==================
+ SECURITY POLICY
+==================
+
+SUPPORTED VERSIONS:
+
+Version    Status
+-------    ------
+pre-alpha  CURRENT
+
+REPORTING A VULNERABILITY:
+
+If you've identified a security vulnerability, it's crucial to handle the information responsibly to prevent potential exploitation.
+
+
+******* DO NOT: ********
+- Create a public issue on the repository.
+- Submit a pull request with a fix.
+- Disclose the vulnerability publicly in any way.
+
+
+******* INSTEAD: *******
+Please send a detailed report privately to team@sexycoders.org. If you have a potential fix or workaround, include it in your report, and we will address the matter discretely.
+
+Your collaboration in ensuring the security of our software is invaluable. Thank you!

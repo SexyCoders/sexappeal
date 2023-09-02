@@ -11,8 +11,8 @@
             md="2"
           >
             <v-card class="ma-2 pa-2 card-hover">
-              <v-card-title class="text-h6 text-center">{{ item.title }}</v-card-title>
               <v-img :src="item.image" height="200"></v-img>
+              <v-card-title class="text-h6 text-center"><b>{{ item.title }}</b></v-card-title>
               <v-card-text class="text-center">{{ item.content }}</v-card-text>
             </v-card>
           </v-col>

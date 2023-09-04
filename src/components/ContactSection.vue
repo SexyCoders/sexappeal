@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container id="contact" fluid>
     <v-row class="justify-center align-center">
       <v-col cols="6">
         <v-card class="d-flex flex-column pane-container fixed-height">

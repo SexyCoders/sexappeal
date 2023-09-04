@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="fullscreen-container">
+  <v-container id="home" fluid class="fullscreen-container">
     <video autoplay loop muted class="fullscreen-video">
       <source src="https://lib.sexycoders.org/share/logos/live/SexyCodersBanner.mp4" type="video/mp4">
     </video>

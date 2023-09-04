@@ -1,5 +1,5 @@
 <template>
-  <v-row justify="center">
+  <v-row id="about" justify="center">
     <v-col cols="12">
       <v-container>
         <v-row justify="center" no-gutters>

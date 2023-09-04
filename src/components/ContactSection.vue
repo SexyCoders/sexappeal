@@ -1,41 +1,52 @@
 <template>
   <v-container fluid>
     <v-row class="justify-center align-center">
-      <v-col cols="4">
-        <v-card class="d-flex flex-column pane-container">
-          <v-card-text class="text-left">
-            <v-icon v-if="showForm" @click="showForm = !showForm" class="ma-2">mdi-arrow-left</v-icon>
-          </v-card-text>
+      <v-col cols="6">
+        <v-card class="d-flex flex-column pane-container fixed-height">
+            <v-icon v-if="showForm" class="ma-2 pl-2" @click="handleBackClick">mdi-arrow-left</v-icon>
+            <h2 v-else class="d-flex justify-center">Contact Us</h2>
           <!-- Info Pane -->
-          <v-card-text class="text-center flex-grow-1" v-if="!showForm">
-            <h2>Contact Information</h2>
-            <v-row class="fill-height">
+          <v-card-text class="text-center flex-grow-1 fixed-height" v-if="!showForm">
+            <!--<v-row class="fill-height">-->
+            <v-row style="height:97%">
               <!-- First Column: Company Info -->
-              <v-col cols="6" class="d-flex flex-column justify-center">
-                <div class="contact-info-item">
-                  <v-icon>mdi-phone</v-icon> Phone: +1 123 456 7890
+                        <v-col cols="6" class="d-flex flex-column justify-center align-center justify-space-between custom-col">
+                <div>
+                  <v-icon>mdi-email</v-icon> team@sexycoders.org
                 </div>
-                <div class="contact-info-item">
-                  <v-icon>mdi-map-marker</v-icon> Location: 123 Main St, City, Country
+                <div>
+                  <v-icon>mdi-phone</v-icon>
+                  <a class='text-left'>(+30) 6944968225 (10:00 - 14:00 EET)</a><br>
                 </div>
-                <div class="contact-info-item">
-                  <v-icon>mdi-email</v-icon> Email: info@company.com
+                <div>
+                  <v-icon>mdi-whatsapp</v-icon>
+                  <a class='text-left'>WhatsUp (10:00 - 14:00 EET)</a><br>
                 </div>
-                <div class="contact-info-item">
-                  <v-icon>mdi-web</v-icon> <a href="https://support.sexycoders.org">Documentation</a>
+                <div>
+                  <v-icon>mdi-web</v-icon>
+                  <a @click="redirectToNewTab('https://mm.sexycoders.org')">Join Our Community</a>
                 </div>
+                <div>
+                  <v-icon>mdi-map-marker</v-icon>
+                  Lytchett House 13 Freeland Park, Wareham Road, BH16 6FA, Poole, United Kingdom
+                </div>
+            <div class="button-row">
+              <v-btn color="blue" @click="showForm = !showForm" class="button-item">
+                Send Message
+              </v-btn>
+              <v-btn color="green" class="button-item">
+                <a @click="redirectToNewTab('https://support.sexycoders.org')">Get Started</a>
+              </v-btn>
+            </div>
               </v-col>
               <!-- Second Column: Leaflet Map -->
               <v-col cols="6" class="d-flex align-stretch">
                 <div id="leafletMap" class="flex-grow-1"></div>
               </v-col>
             </v-row>
-            <v-btn block color="blue" @click="showForm = !showForm" class="mt-auto">
-              Send Message
-            </v-btn>
           </v-card-text>
           <!-- Contact Form -->
-          <v-card-text class="text-center flex-grow-1" v-else>
+          <v-card-text class="text-center flex-grow-1 fixed-height" v-else>
             <Form @submit="handleSubmit" :validation-schema="schema">
               <Field name="name" v-slot="{ field, meta }">
                 <v-text-field
@@ -89,14 +100,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import * as yup from 'yup';
 import { Form, Field } from 'vee-validate';
 import "leaflet/dist/leaflet.css";
 import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 
-const showForm = ref(false);  // Set to false to show info pane by default
+let map;
+const showForm = ref(false);
 
 const schema = yup.object({
   name: yup.string().required('Name is required'),
@@ -109,27 +120,59 @@ const handleSubmit = async () => {
   // Your form submission logic here
 };
 
-onMounted(() => {
-  const map = L.map('leafletMap').setView([40.7128, -74.0060], 13);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
-  }).addTo(map);
-  L.marker([40.7128, -74.0060]).addTo(map);
+const handleBackClick = () => {
+  showForm.value = false;
+  if (map) {
+    map.remove();  // remove the existing map
+    map = null;  // set map to null
+  }
+  nextTick(() => {
+    initMap();
+  });
+};
+
+const icon = L.icon({
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+  // other options
 });
+
+const initMap = () => {
+  if (!map) {
+    map = L.map('leafletMap').setView([50.75864930601419, -2.0748479677224383], 17);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Maps by OpenStreetMap'
+    }).addTo(map);
+    L.marker([50.75865604477328, -2.074973544393281],{ icon: icon }).addTo(map);
+  } else {
+    map.invalidateSize();
+  }
+};
+
+// Function to redirect to a new tab
+const redirectToNewTab = (url) => {
+  window.open(url, '_blank');
+};
+
+
+
+onMounted(() => {
+  initMap();
+});
+
 </script>
 
 <style scoped>
-.pane-container {
-  flex-grow: 1;
+
+.button-row {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 10%;  /* Left padding */
+  padding-right: 10%;  /* Right padding */
 }
 
-.contact-info-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-}
 
 .fill-height {
   height: 100%;
@@ -138,5 +181,17 @@ onMounted(() => {
 #leafletMap {
   height: 100%;
 }
+
+.fixed-height {
+  height: 470px;
+  overflow: auto;
+}
+
+.custom-col {
+  padding-top: 1%;  /* Adjust as needed */
+  padding-bottom: 1%;  /* Adjust as needed */
+}
+
+
 </style>
 

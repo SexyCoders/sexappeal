@@ -12,23 +12,30 @@
               <!-- First Column: Company Info -->
                         <v-col cols="6" class="d-flex flex-column justify-center align-center justify-space-between custom-col">
                 <div>
+                  <a class="text-left">
                   <v-icon>mdi-email</v-icon> team@sexycoders.org
+                  </a>
                 </div>
                 <div>
+                  <a class='text-left'>
                   <v-icon>mdi-phone</v-icon>
-                  <a class='text-left'>(+30) 6944968225 (10:00 - 14:00 EET)</a><br>
+                    (+30) 6944968225 (10:00 - 14:00 EET)</a><br>
                 </div>
                 <div>
+                  <a class='text-left'>
                   <v-icon>mdi-whatsapp</v-icon>
-                  <a class='text-left'>WhatsUp (10:00 - 14:00 EET)</a><br>
+                    WhatsUp (10:00 - 14:00 EET)</a><br>
                 </div>
                 <div>
-                  <v-icon>mdi-web</v-icon>
-                  <a @click="redirectToNewTab('https://mm.sexycoders.org')">Join Our Community</a>
+                  <a class="text-left" @click="redirectToNewTab('https://mm.sexycoders.org')">
+                  <v-icon>mdi-handshake-outline</v-icon>
+                    Join Our Community</a>
                 </div>
                 <div>
+                  <a class="text-left">
                   <v-icon>mdi-map-marker</v-icon>
                   Lytchett House 13 Freeland Park, Wareham Road, BH16 6FA, Poole, United Kingdom
+                  </a>
                 </div>
             <div class="button-row">
               <v-btn color="blue" @click="showForm = !showForm" class="button-item">
@@ -74,7 +81,7 @@
                   label="Subject"
                   :error-messages="meta.errors"
                   variant="outlined"
-                  prepend-inner-icon="mdi-subject"
+                  prepend-inner-icon="mdi-email-edit-outline"
                   density="compact"
                 />
               </Field>
@@ -84,7 +91,7 @@
                   label="Message"
                   :error-messages="meta.errors"
                   variant="outlined"
-                  prepend-inner-icon="mdi-message-outline"
+                  prepend-inner-icon="mdi-text-box-outline"
                   density="compact"
                 />
               </Field>

@@ -27,13 +27,13 @@
                     WhatsUp (10:00 - 14:00 EET)</a><br>
                 </div>
                 <div>
-                  <a class="text-left" @click="redirectToNewTab('https://mm.sexycoders.org')">
                   <v-icon>mdi-handshake-outline</v-icon>
+                  <a href="https://mm.sexycoders.org" target="_blanc" class="text-left styled-link">
                     Join Our Community</a>
                 </div>
                 <div>
                   <a class="text-left">
-                  <v-icon>mdi-map-marker</v-icon>
+                  <v-icon>mdi-mailbox-outline</v-icon>
                   Lytchett House 13 Freeland Park, Wareham Road, BH16 6FA, Poole, United Kingdom
                   </a>
                 </div>
@@ -106,7 +106,9 @@
   </v-container>
 </template>
 
+
 <script setup>
+import axios from 'axios';
 import { ref, onMounted, nextTick } from 'vue';
 import * as yup from 'yup';
 import { Form, Field } from 'vee-validate';
@@ -123,15 +125,42 @@ const schema = yup.object({
   message: yup.string().required('Message is required'),
 });
 
-const handleSubmit = async () => {
-  // Your form submission logic here
+const handleSubmit = async (values) => {
+  console.log(values);
+  try {
+    // Convert values to a JSON string
+    const jsonString = JSON.stringify(values);
+    console.log(jsonString);
+
+    // Encode the JSON string in base64
+    const base64EncodedData = btoa(jsonString);
+
+    const response = await axios({
+      method: 'post',
+      url: 'http://localhost:3001/app/contact_form',
+      data: base64EncodedData,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.data.status === 'success') {
+      console.log('Email sent successfully');
+      showForm.value = false;
+    } else {
+      console.error('Error sending email:', response.data.message);
+    }
+  } catch (error) {
+    console.error('An error occurred while sending the email:', error);
+  }
 };
+
 
 const handleBackClick = () => {
   showForm.value = false;
   if (map) {
-    map.remove();  // remove the existing map
-    map = null;  // set map to null
+    map.remove();
+    map = null;
   }
   nextTick(() => {
     initMap();
@@ -142,7 +171,6 @@ const icon = L.icon({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
-  // other options
 });
 
 const initMap = () => {
@@ -157,12 +185,9 @@ const initMap = () => {
   }
 };
 
-// Function to redirect to a new tab
 const redirectToNewTab = (url) => {
   window.open(url, '_blank');
 };
-
-
 
 onMounted(() => {
   initMap();
@@ -199,6 +224,28 @@ onMounted(() => {
   padding-bottom: 1%;  /* Adjust as needed */
 }
 
+  .styled-link {
+    text-decoration: none;
+    color: inherit;
+    padding: 0 8px;
+    position: relative;
+  }
+
+  .styled-link:hover {
+    text-decoration: none;
+  }
+
+  .styled-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--v-secondary-base);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
 </style>
 

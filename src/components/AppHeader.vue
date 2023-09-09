@@ -10,9 +10,9 @@
     <v-toolbar-title class="mr-5" :style="titleStyle">SEXYCODERS</v-toolbar-title>
     <SearchBar v-if="showSearchBar" />
     <v-spacer></v-spacer>
-    <v-btn icon :color="getIconColor">
+    <!--<v-btn icon :color="getIconColor">-->
       <!--<ProfileMenu />-->
-    </v-btn>
+    <!--</v-btn>-->
   </v-app-bar>
 </template>
 
@@ -25,7 +25,7 @@ export default defineComponent({
   name: 'AppHeader',
   components: {
     SearchBar,
-//    ProfileMenu,
+ //   ProfileMenu,
   },
   setup() {
     const drawer = ref(false);

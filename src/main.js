@@ -4,11 +4,16 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
+import keycloak from './keycloak';
+import hCaptcha from 'vue-hcaptcha';
 
 loadFonts()
+
 
 createApp(App)
   .use(router)
   .use(store)
   .use(vuetify)
+  .provide('keycloak', keycloak)
+  .component('h-captcha', hCaptcha)
   .mount('#app')
